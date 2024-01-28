@@ -17,7 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 class StockServiceTest {
 
     @Autowired
-    private StockService stockService;
+    private PessimisticLockStockService stockService;
+    // PessimisticLock의 장점:
+    // 1. 충돌이 빈번하게 일어난다면 OptimisticLock보다 성능이 좋음
+    // 2. Lock을 통해 Update를 제어하기 때문에 데이터 정합성을 보장할 수 있음
+    // PessimisticLock의 단점: Lock을 통해 Update를 제어하기 때문에 성능이 떨어짐
 
     @Autowired
     private StockRepository stockRepository;

@@ -2,8 +2,8 @@ package com.example.stock.service;
 
 import com.example.stock.domain.Stock;
 import com.example.stock.repository.StockRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StockService {
@@ -14,7 +14,9 @@ public class StockService {
         this.stockRepository = stockRepository;
     }
 
-//    @Transactional // @Transactional을 이용하면 해당 클래스를 매핑한 새로운 클레스를 만들어서 실행함 (ex: TransactionalStockService)
+
+    // @Transactional을 이용하면 해당 클래스를 매핑한 새로운 클레스를 만들어서 실행함 (ex: TransactionalStockService)
+    // @Transactional
     public synchronized void decrease(Long id, Long quantity) { // synchronized: 해당 메소드에 1개의 쓰레드만 접근 가능
         // Stock 조회
         // 재고를 감소시킨 뒤
