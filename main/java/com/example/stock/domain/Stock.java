@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 
 @Entity
 public class Stock {
@@ -15,6 +16,9 @@ public class Stock {
     private Long productId;
 
     private Long quantity;
+
+    @Version // Optimistic Lock을 위한 필드
+    private Long version;
 
     public Stock() {
     }

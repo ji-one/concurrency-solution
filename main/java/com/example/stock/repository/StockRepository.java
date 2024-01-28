@@ -12,4 +12,8 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     // spring data jpa에서 제공하는 @Lock 어노테이션을 이용하면 해당 메소드에 대해 Lock을 걸 수 있음
     @Query("select s from Stock s where s.id = :id")
     Stock findByIdWithPessimisticLock(Long id);
+
+    @Lock(LockModeType.OPTIMISTIC)
+    @Query("select s from Stock s where s.id = :id")
+    Stock findByIdWithOptimisticLock(Long id);
 }
