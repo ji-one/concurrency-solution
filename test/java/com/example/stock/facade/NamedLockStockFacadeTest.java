@@ -14,14 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OptimisticLockStockFacadeTest {
+class NamedLockStockFacadeTest {
+
+    // NamedLock은 주로 분산 Lock을 구현할 때 사용
+    // PessimisticLock은 timeout을 구현하기 힘들지만, NamedLock은 timeout을 구현하기 쉬움
+    // Data 삽입 시에 정합성을 맞춰야하는 경우에도 NamedLock을 사용할 수 있음
+    // 하지만 transaction 종료 시에 Lock 해제 세션 관리를 잘 해줘야하고 실제로 사용 시에는 구현 방법이 복잡할 수 있음.
 
     @Autowired
-    private OptimisticLockStockFacade optimisticLockStockFacade;
-    // OptimisticLock의 장점: Lock을 통해 Update를 제어하지 않기 때문에 PessimisticLock 보다 성능이 좋음
-    // OptimisticLock의 단점: Update가 실패했을 때, 재시도 로직을 개발자가 직접 작성해줘야하는 번거로움이 존재
-    // 충돌이 빈번하게 일어나거나, 빈번하게 일어날 것으로 예상된다면 PessimisticLock을 사용하는 것이 좋음
-    // 빈번하게 일어나지 않을 것이라고 예상된다면 OptimisticLock을 사용하는 것이 좋음
+    private NamedLockStockFacade namedLockStockFacade;
 
     @Autowired
     private StockRepository stockRepository;
@@ -50,9 +51,7 @@ class OptimisticLockStockFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    optimisticLockStockFacade.decrease(1L, 1L);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    namedLockStockFacade.decrease(1L, 1L);
                 } finally {
                     latch.countDown();
                 }
